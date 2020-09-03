@@ -85,3 +85,6 @@ Usage:---------------------------------------
 ### Server酱提醒
 
 ![image3](https://raw.githubusercontent.com/timwhitez/Frog-Submon/master/images/frogsubmon3.png)
+
+# todo - 也许不会做
+- [ ] 按域名分类存储
