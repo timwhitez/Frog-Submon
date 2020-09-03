@@ -13,6 +13,8 @@ Frog-Submon子域名监控脚本，采用python3实现，使用subprocess加载�
 
 xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大字典的爆破
 
+为了扫描速度考虑采用内置字典
+
 ```
 - ksundomain爆破对网络影响较大。
 ```
