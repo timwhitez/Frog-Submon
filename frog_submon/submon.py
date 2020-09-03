@@ -97,6 +97,7 @@ def drop_duplicates(filename, res):
 	f.seek(0)
 	f.writelines(l)
 	f.close()
+	return len(l) - rows
 
 
 
@@ -131,9 +132,9 @@ def delf(fname):
 		return
 
 #server酱提示
-def serverj():
+def serverj(num):
 	global url1
-	data1 = {"text": "subdomain update! ", "desp": "subdomain update! "}
+	data1 = {"text": "subdomain update:"+num+"! ", "desp": "subdomain update:"+num+"! "}
 	try:
 			requests.post(url1, data=data1)
 	except:
@@ -267,8 +268,8 @@ if __name__=='__main__':
 		print("End-Time:"+tn)
 		update_num = unduplicates("output/subdomains.txt", "output/update_" + tn + ".txt", tmp1)
 		if update_num >0:
-			serverj()
-			drop_duplicates("output/subdomains.txt", tmp1)
+			up_num = drop_duplicates("output/subdomains.txt", tmp1)
+			serverj(up_num)
 
 		#删除临时文件
 		delf("tmp/ksub_tmp.txt")
