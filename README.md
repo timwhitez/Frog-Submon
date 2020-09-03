@@ -4,7 +4,7 @@
 
 - Frog-Submon为Frog系列第一个项目🐸
 
-# Frog-Submon
+# 🐸Frog-Submon
 Frog-Submon子域名监控脚本，采用python3实现，使用subprocess加载三款golang子域名发现工具：
 
 - [ksubdomain](https://github.com/knownsec/ksubdomain) 为知道创宇404团队开源的无状态子域名爆破工具
