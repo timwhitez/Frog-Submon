@@ -17,6 +17,8 @@ xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大
 
 在一轮扫描结束后进行三个工具结果的合并去重、子域名更新统计、微信Server酱提示、临时文件删除，并睡眠等待下次扫描
 
+默认睡眠时间为10h，可自行修改
+
 # Usage
 若无高级版xray则可以使用submon_noxray.py, 仅调用两个工具
 ```
