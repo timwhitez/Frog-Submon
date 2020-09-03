@@ -127,7 +127,7 @@ def serverj(num):
 
 #ksub扫描
 def ksub():
-	cmd = ["./ksub/"+ksubname, "-dl", "domain.txt", "-f", "./dict/subnames.txt", "-l", "3","-skip-wild", "-silent", "-b", "500k"]
+	cmd = ["./ksub/"+ksubname, "-dl", "domain.txt", "-l", "3","-skip-wild", "-silent", "-b", "500k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -175,7 +175,6 @@ if __name__=='__main__':
 	else:
 		getsys(sys.argv[1])
 
-	print("请确定dict文件夹内有对应字典文件")
 	print("请确定可执行文件都设置了执行权限")
 	print("请确定tmp目录为空")
 	#os.system("pause")
