@@ -70,3 +70,14 @@ Usage:---------------------------------------
 具体调用的参数也可在脚本内进行修改。
 
 # 运行截图
+### 运行
+
+![image1](https://raw.githubusercontent.com/timwhitez/Frog-Submon/master/images/frogsubmon.jpg)
+
+### 生成的更新文本
+
+![image2](https://raw.githubusercontent.com/timwhitez/Frog-Submon/master/images/frogsubmon2.jpg)
+
+### Server酱提醒
+
+![image3](https://raw.githubusercontent.com/timwhitez/Frog-Submon/master/images/frogsubmon3.png)
