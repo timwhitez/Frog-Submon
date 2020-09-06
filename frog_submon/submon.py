@@ -61,8 +61,9 @@ def xray_read(fname):
 		for text in f.readlines():
 			data1 = text.split(',')
 			li.append(data1[0])
-	finally:
 		f.close()
+	except:
+		pass
 	return li
 
 
