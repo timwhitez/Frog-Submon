@@ -174,7 +174,6 @@ if __name__=='__main__':
 	else:
 		getsys(sys.argv[1])
 
-	print("请确定dict文件夹内有对应字典文件")
 	print("请确定可执行文件都设置了执行权限")
 	print("请确定tmp目录为空")
 	#os.system("pause")
