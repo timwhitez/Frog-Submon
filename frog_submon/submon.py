@@ -46,9 +46,11 @@ def readf(fname):
 			data1 = text.strip('\n')
 			if data1 != '':
 				li.append(data1)
-	finally:
 		f.close()
+	except:
+		pass
 	return li
+
 
 
 #读取xray输出文件输出list
