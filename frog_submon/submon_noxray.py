@@ -181,7 +181,7 @@ if __name__=='__main__':
 	while(1):
 		domain = readf("domain.txt")
 		for i in domain:
-			dname = i.split(".")[0]
+			dname = i
 			#执行ksubdomain写入文件
 			k = ksub(i)
 			if k is not None:
