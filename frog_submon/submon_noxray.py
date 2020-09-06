@@ -124,10 +124,9 @@ def serverj(num):
 			return
 
 
-
 #ksub扫描
 def ksub():
-	cmd = ["./ksub/"+ksubname, "-dl", "domain.txt", "-l", "3","-skip-wild", "-silent", "-b", "500k"]
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent", "-b", "500k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -151,7 +150,7 @@ def ksubverify(filename):
 
 #subf扫描
 def subf():
-	cmd = ["./subf/"+subfname, "-dL", "domain.txt", "-recursive", "-silent", "-all"]
+	cmd = ["./subf/"+subfname, "-d", target, "-recursive", "-silent", "-t", "20", "-all"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -165,55 +164,59 @@ if __name__=='__main__':
 	banner.banner()
 	if len(sys.argv) <= 1:
 		print('\n')
-		print("Usage:---------------------------------------")
-		print("-----                                  ------")
-		print("-----     submon_noxray.py linux       ------")
-		print("-----      submon_noxray.py win        ------")
-		print("-----                                  ------")
-		print("---------------------------------------------")
+		print("Usage:-----------------------------------------------")
+		print("-----                                          ------")
+		print("-----     python3 submon_noxray.py linux       ------")
+		print("-----      python3 submon_noxray.py win        ------")
+		print("-----                                          ------")
+		print("-----------------------------------------------------")
 		exit()
 	else:
 		getsys(sys.argv[1])
 
+	print("请确定dict文件夹内有对应字典文件")
 	print("请确定可执行文件都设置了执行权限")
 	print("请确定tmp目录为空")
 	#os.system("pause")
 	#死循环
 	while(1):
-		#执行ksubdomain写入文件
-		k = ksub()
-		if k is not None:
-			opt2File(k, "tmp/ksub_tmp.txt")
+		domain = readf("domain.txt")
+		for i in domain:
+			dname = i.split(".")[0]
+			#执行ksubdomain写入文件
+			k = ksub(i)
+			if k is not None:
+				opt2File(k, "tmp/ksub_tmp.txt")
 
-		#执行subfinder写入文件
-		sf = subf()
-		if sf is not None:
-			opt2File(sf, "tmp/subf_tmp.txt")
-		
-		#验证subfinder
-		ksub_v = ksubverify("tmp/subf_tmp.txt")
-		if ksub_v is not None:
-			opt2File(ksub_v, "tmp/subf_tmp.txt")
-		
-		#读取临时文件至数组
-		tmp1 = readf("tmp/ksub_tmp.txt")
-		tmp2 = readf("tmp/subf_tmp.txt")
+			#执行subfinder写入文件
+			sf = subf(i)
+			if sf is not None:
+				opt2File(sf, "tmp/subf_tmp.txt")
+			
+			#验证subfinder
+			ksub_v = ksubverify("tmp/subf_tmp.txt")
+			if ksub_v is not None:
+				opt2File(ksub_v, "tmp/subf_tmp.txt")
+			
+			#读取临时文件至数组
+			tmp1 = readf("tmp/ksub_tmp.txt")
+			tmp2 = readf("tmp/subf_tmp.txt")
 
-		#去重排列临时数组
-		tmp1.extend(tmp2)
-		tmp1 = list(set(tmp1))
+			#去重排列临时数组
+			tmp1.extend(tmp2)
+			tmp1 = list(set(tmp1))
 
-		#检查更新并写入文件
-		tn = gettime()
-		print("End-Time:"+tn)
-		update_num = unduplicates("output/subdomains.txt", "output/update" + tn + ".txt", tmp1)
-		if update_num >0:
-			up_num = drop_duplicates("output/subdomains.txt", tmp1)
-			serverj(up_num)
+			#检查更新并写入文件
+			tn = gettime()
+			print("End-Time:"+tn)
+			update_num = unduplicates("output/subdomains_"+dname+".txt", "output/update_" +dname+"_"+ tn + ".txt", tmp1)
+			if update_num >0:
+				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
+				serverj(up_num)
 
-		#删除临时文件
-		delf("tmp/ksub_tmp.txt")
-		delf("tmp/subf_tmp.txt")
+			#删除临时文件
+			delf("tmp/ksub_tmp.txt")
+			delf("tmp/subf_tmp.txt")
 
 		#睡眠等待10h后继续循环
 		print("Sleep and wait...")

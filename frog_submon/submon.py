@@ -101,6 +101,7 @@ def drop_duplicates(filename, res):
 
 
 
+
 #更新项
 def unduplicates(file_raw,file_new,res):
 	raw_sub = []
@@ -131,6 +132,8 @@ def delf(fname):
 	except:
 		return
 
+
+
 #server酱提示
 def serverj(num):
 	global url1
@@ -139,6 +142,8 @@ def serverj(num):
 			requests.post(url1, data=data1)
 	except:
 			return
+
+
 
 
 
@@ -159,8 +164,8 @@ def xray_filt(xfname):
 
 
 #ksub扫描
-def ksub():
-	cmd = ["./ksub/"+ksubname, "-dl", "domain.txt", "-l", "3","-skip-wild", "-silent", "-b", "500k"]
+def ksub(target):
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -171,7 +176,7 @@ def ksub():
 
 #ksub验证模式
 def ksubverify(filename):
-	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent", "-b", "500k"]
+	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -183,8 +188,8 @@ def ksubverify(filename):
 
 
 #subf扫描
-def subf():
-	cmd = ["./subf/"+subfname, "-dL", "domain.txt", "-recursive", "-silent", "-all"]
+def subf(target):
+	cmd = ["./subf/"+subfname, "-d", target, "-recursive", "-silent", "-t", "20", "-all"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -211,12 +216,12 @@ if __name__=='__main__':
 	banner.banner()
 	if len(sys.argv) <= 1:
 		print('\n')
-		print("Usage:---------------------------------------")
-		print("-----                                  ------")
-		print("-----       submon.py linux            ------")
-		print("-----        submon.py win             ------")
-		print("-----                                  ------")
-		print("---------------------------------------------")
+		print("Usage:----------------------------------------------")
+		print("-----                                         ------")
+		print("-----      python3 submon.py linux            ------")
+		print("-----       python3 submon.py win             ------")
+		print("-----                                         ------")
+		print("----------------------------------------------------")
 		exit()
 	else:
 		getsys(sys.argv[1])
@@ -227,53 +232,60 @@ if __name__=='__main__':
 	#os.system("pause")
 	#死循环
 	while(1):
-		#执行ksubdomain写入文件
-		k = ksub()
-		if k is not None:
-			opt2File(k, "tmp/ksub_tmp.txt")
-
-		#执行subfinder写入文件
-		sf = subf()
-		if sf is not None:
-			opt2File(sf, "tmp/subf_tmp.txt")
-		
-		#验证subfinder
-		ksub_v = ksubverify("tmp/subf_tmp.txt")
-		if ksub_v is not None:
-			opt2File(ksub_v, "tmp/subf_tmp.txt")
-
-		#执行xray子域名发现并写入文件
 		domain = readf("domain.txt")
 		for i in domain:
+			dname = i.split(".")[0]
+			#执行ksubdomain写入文件
+			k = ksub(i)
+			if k is not None:
+				opt2File(k, "tmp/ksub_tmp.txt")
+
+			#执行subfinder写入文件
+			sf = subf(i)
+			if sf is not None:
+				opt2File(sf, "tmp/subf_tmp.txt")
+			
+			#验证subfinder
+			ksub_v = ksubverify("tmp/subf_tmp.txt")
+			if ksub_v is not None:
+				opt2File(ksub_v, "tmp/subf_tmp.txt")
+
+			#执行xray子域名发现并写入文件
 			xray(i)
 			xray_tmp = xray_read("tmp/output.txt")
 			delf("tmp/output.txt")
 			if xray_tmp is not None:
 				for j in xray_tmp:
 					rFile(j, "tmp/xray_tmp.txt")
-		
-		#读取临时文件至数组
-		tmp1 = readf("tmp/ksub_tmp.txt")
-		tmp2 = readf("tmp/subf_tmp.txt")
-		tmp3 = readf("tmp/xray_tmp.txt")
 
-		#去重排列临时数组
-		tmp1.extend(tmp2)
-		tmp1.extend(tmp3)
-		tmp1 = list(set(tmp1))
+			#验证xray
+			xray_v = xrayverify("tmp/xray_tmp.txt")
+			if xray_v is not None:
+				opt2File(xray_v, "tmp/xray_tmp.txt")
+				
 
-		#检查更新并写入文件
-		tn = gettime()
-		print("End-Time:"+tn)
-		update_num = unduplicates("output/subdomains.txt", "output/update_" + tn + ".txt", tmp1)
-		if update_num >0:
-			up_num = drop_duplicates("output/subdomains.txt", tmp1)
-			serverj(up_num)
+			#读取临时文件至数组
+			tmp1 = readf("tmp/ksub_tmp.txt")
+			tmp2 = readf("tmp/subf_tmp.txt")
+			tmp3 = readf("tmp/xray_tmp.txt")
 
-		#删除临时文件
-		delf("tmp/ksub_tmp.txt")
-		delf("tmp/subf_tmp.txt")
-		delf("tmp/xray_tmp.txt")
+			#去重排列临时数组
+			tmp1.extend(tmp2)
+			tmp1.extend(tmp3)
+			tmp1 = list(set(tmp1))
+
+			#检查更新并写入文件
+			tn = gettime()
+			print("End-Time:"+tn)
+			update_num = unduplicates("output/subdomains_"+dname+".txt", "output/update_" +dname+"_"+ tn + ".txt", tmp1)
+			if update_num >0:
+				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
+				serverj(up_num)
+
+			#删除临时文件
+			delf("tmp/ksub_tmp.txt")
+			delf("tmp/subf_tmp.txt")
+			delf("tmp/xray_tmp.txt")
 
 		#睡眠等待10h后继续循环
 		print("Sleep and wait...")
