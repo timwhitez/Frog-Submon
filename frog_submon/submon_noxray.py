@@ -126,7 +126,7 @@ def serverj(num):
 
 #ksub扫描
 def ksub():
-	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent", "-b", "500k"]
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "3","-skip-wild", "-silent", "-b", "500k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
