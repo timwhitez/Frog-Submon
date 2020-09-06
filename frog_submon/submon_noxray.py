@@ -115,9 +115,9 @@ def delf(fname):
 
 
 #server酱提示
-def serverj(num):
+def serverj(num1):
 	global url1
-	data1 = {"text": "subdomain update:"+num+"! ", "desp": "subdomain update:"+num+"! "}
+	data1 = {"text": "subdomain update:"+str(num1)+"! ", "desp": "subdomain update:"+str(num1)+"! "}
 	try:
 			requests.post(url1, data=data1)
 	except:
@@ -211,7 +211,7 @@ if __name__=='__main__':
 			update_num = unduplicates("output/subdomains_"+dname+".txt", "output/update_" +dname+"_"+ tn + ".txt", tmp1)
 			if update_num >0:
 				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
-				serverj(str(up_num))
+				serverj(up_num)
 
 			#删除临时文件
 			delf("tmp/ksub_tmp.txt")
