@@ -40,9 +40,11 @@ def readf(fname):
 			data1 = text.strip('\n')
 			if data1 != '':
 				li.append(data1)
-	finally:
 		f.close()
+	except:
+		pass
 	return li
+
 
 
 #覆盖写入
