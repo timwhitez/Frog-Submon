@@ -280,7 +280,7 @@ if __name__=='__main__':
 			update_num = unduplicates("output/subdomains_"+dname+".txt", "output/update_" +dname+"_"+ tn + ".txt", tmp1)
 			if update_num >0:
 				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
-				serverj(up_num)
+				serverj(str(up_num))
 
 			#删除临时文件
 			delf("tmp/ksub_tmp.txt")
