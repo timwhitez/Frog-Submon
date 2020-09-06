@@ -259,7 +259,7 @@ if __name__=='__main__':
 					rFile(j, "tmp/xray_tmp.txt")
 
 			#验证xray
-			xray_v = xrayverify("tmp/xray_tmp.txt")
+			xray_v = ksubverify("tmp/xray_tmp.txt")
 			if xray_v is not None:
 				opt2File(xray_v, "tmp/xray_tmp.txt")
 				
