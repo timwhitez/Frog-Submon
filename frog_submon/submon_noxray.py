@@ -222,6 +222,8 @@ def run(jname,i):
 		ksub_v = ksubverify("tmp/subf_tmp.txt")
 	if ksub_v is not None:
 		opt2File(ksub_v, "tmp/subf_tmp.txt")
+	else:
+		opt2File("", "tmp/subf_tmp.txt")
 
 	#读取临时文件至数组
 	tmp1 = readf("tmp/ksub_tmp.txt")
