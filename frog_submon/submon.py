@@ -175,7 +175,9 @@ def ksub(target):
 	try:
 		output = subprocess.check_output(cmd)
 	except:
-		return None
+		print("Unexpected error:", sys.exc_info())
+		print("请确定ksubdomain参数配置正确(加入-e参数选择网卡)")
+		exit()
 
 	return output
 
