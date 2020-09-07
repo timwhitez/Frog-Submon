@@ -10,6 +10,8 @@
 支持json格式输入，
 加入http请求。
 ```
+json格式仅支持[public-bugbounty-programs](https://github.com/projectdiscovery/public-bugbounty-programs)对应格式
+
 Frog-Submon子域名监控脚本，采用python3实现，使用subprocess加载三款golang子域名发现工具：
 
 - [ksubdomain](https://github.com/knownsec/ksubdomain) 为知道创宇404团队开源的无状态子域名爆破工具
