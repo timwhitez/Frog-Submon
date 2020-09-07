@@ -1,0 +1,12 @@
+{
+   "programs":[
+      {
+        "name":"test",
+       "domains":[
+            "test1.com",
+	    "test2.com"
+         ]
+      }
+   ]
+   
+}
