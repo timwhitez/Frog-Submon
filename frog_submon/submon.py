@@ -210,9 +210,8 @@ def xray(target):
 	try:
 		output = subprocess.check_output(cmd)
 	except:
-		print("Unexpected error:", sys.exc_info())
-		print("请确定是否存在xray证书")
-		exit()
+		print("请检查xray配置")
+		return None
 
 	return
 
