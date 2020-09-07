@@ -6,7 +6,9 @@
 
 # 🐸Frog-Submon
 ```
-2020/9/7更新：修复部分bug，支持[json](https://github.com/projectdiscovery/public-bugbounty-programs)格式输入，加入http请求。
+2020/9/7更新：修复部分bug，
+支持[json](https://github.com/projectdiscovery/public-bugbounty-programs)格式输入，
+加入http请求。
 ```
 Frog-Submon子域名监控脚本，采用python3实现，使用subprocess加载三款golang子域名发现工具：
 
