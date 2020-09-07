@@ -25,6 +25,8 @@ xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大
 
 ```
 - ksundomain爆破对网络影响较大。
+
+- 使用前请确定ksubdomain对应的网卡序号。
 ```
 
 在一轮扫描结束后进行三个工具结果的合并去重、子域名更新统计、http(s)请求、微信Server酱提示、临时文件删除，并睡眠等待下次扫描
