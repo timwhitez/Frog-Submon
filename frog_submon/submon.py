@@ -12,6 +12,7 @@ url1 = ""
 xrayname = 'xray_linux'
 subfname = 'subfinder_linux'
 ksubname = 'ksubdomain_linux'
+httpxname = 'httpx_linux'
 
 
 
@@ -24,10 +25,12 @@ def getsys(sys0):
 		xrayname = 'xray_linux'
 		subfname = 'subfinder_linux'
 		ksubname = 'ksubdomain_linux'
+		httpxname = 'httpx_linux'
 	if sys0.lower() == 'win':
 		xrayname = 'xray_win.exe'
 		subfname = 'subfinder_win.exe'
 		ksubname = 'ksubdomain_win.exe'
+		httpxname = 'httpx_win'
 
 
 
@@ -61,9 +64,8 @@ def xray_read(fname):
 		for text in f.readlines():
 			data1 = text.split(',')
 			li.append(data1[0])
+	finally:
 		f.close()
-	except:
-		pass
 	return li
 
 
@@ -168,7 +170,7 @@ def xray_filt(xfname):
 
 #ksub扫描
 def ksub(target):
-	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "3","-skip-wild", "-silent", "-b", "500k"]
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -179,7 +181,7 @@ def ksub(target):
 
 #ksub验证模式
 def ksubverify(filename):
-	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent","-b", "500k"]
+	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -205,6 +207,18 @@ def subf(target):
 #xray扫描
 def xray(target):
 	cmd = ["./xray/"+xrayname, "subdomain","--target",target,"--text-output","./tmp/output.txt","--ip-only"]
+	print(cmd)
+	try:
+		output = subprocess.check_output(cmd)
+	except:
+		return None
+
+	return
+
+
+#httpx扫描
+def httpx(target,outputs):
+	cmd = ["./httpx/"+ httpxname, "-l", target, "-title", "-content-length", "-status-code", "-o", outputs, "-ports", "80,81,88,443,591,2082,2087,2095,2096,3000,8000,8001,8008,8080,8083,8088,8090,8099,8443,8834,8888,9443", "-silent", "-no-color", "-follow-redirects"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -280,10 +294,17 @@ if __name__=='__main__':
 			#检查更新并写入文件
 			tn = gettime()
 			print("End-Time:"+tn)
-			update_num = unduplicates("output/subdomains_"+dname+".txt", "output/update_" +dname+"_"+ tn + ".txt", tmp1)
+			hname = "output/update_" +dname+"_"+ tn + ".txt"
+			update_num = unduplicates("output/subdomains_"+dname+".txt", hname, tmp1)
+
+			#httpx请求并保存结果
+			httpx(hname, "http-output/http_"+dname+"_"+ tn + ".txt")
+
+			#Server酱提醒
 			if update_num >0:
 				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
 				serverj(up_num)
+
 
 			#删除临时文件
 			delf("tmp/ksub_tmp.txt")
@@ -292,4 +313,4 @@ if __name__=='__main__':
 
 		#睡眠等待10h后继续循环
 		print("Sleep and wait...")
-		time.sleep(36000)
+		time.sleep(50000)
