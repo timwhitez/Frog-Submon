@@ -97,6 +97,6 @@ Usage:-----------------------------------------------
 ![image3](https://raw.githubusercontent.com/timwhitez/Frog-Submon/master/images/frogsubmon3.png)
 
 # todo list
-- [x] 按域名分类存储
-- [x] 对更新域名进行请求
+- [x] ~~按域名分类存储~~
+- [x] ~~对更新域名进行请求~~
 - [ ] 解析json格式domain输入文件
