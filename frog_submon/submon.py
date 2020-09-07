@@ -251,6 +251,8 @@ def run(jname,i):
 		ksub_v = ksubverify("tmp/subf_tmp.txt")
 	if ksub_v is not None:
 		opt2File(ksub_v, "tmp/subf_tmp.txt")
+	else:
+		opt2File("", "tmp/subf_tmp.txt")
 
 	#执行xray子域名发现并写入文件
 	xray(i)
@@ -264,6 +266,8 @@ def run(jname,i):
 		xray_v = ksubverify("tmp/xray_tmp.txt")
 	if xray_v is not None:
 		opt2File(xray_v, "tmp/xray_tmp.txt")
+	else:
+		opt2File("", "tmp/xray_tmp.txt")
 		
 
 	#读取临时文件至数组
