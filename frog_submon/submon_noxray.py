@@ -17,6 +17,7 @@ httpxname = 'httpx_linux'
 def getsys(sys0):
 	global subfname
 	global ksubname
+	global httpxname
 	if sys0.lower() == 'linux':
 		subfname = 'subfinder_linux'
 		ksubname = 'ksubdomain_linux'
