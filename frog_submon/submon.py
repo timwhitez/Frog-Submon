@@ -170,7 +170,7 @@ def xray_filt(xfname):
 
 #ksub扫描
 def ksub(target):
-	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent"]
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent", "-b","400k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -181,7 +181,7 @@ def ksub(target):
 
 #ksub验证模式
 def ksubverify(filename):
-	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent"]
+	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent", "-b","400k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
