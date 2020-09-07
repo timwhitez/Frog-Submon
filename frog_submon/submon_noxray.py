@@ -231,7 +231,8 @@ if __name__=='__main__':
 			update_num = unduplicates("output/subdomains_"+dname+".txt", hname, tmp1)
 
 			#httpx请求并保存结果
-			httpx(hname, "http-output/http_"+dname+"_"+ tn + ".txt")
+			if update_num >0:
+				httpx(hname, "http-output/http_"+dname+"_"+ tn + ".txt")
 
 			#Server酱提醒
 			if update_num >0:
