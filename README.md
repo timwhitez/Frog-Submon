@@ -32,13 +32,13 @@ xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大
 # Usage
 若无高级版xray则可以使用submon_noxray.py, 仅调用三个工具
 ```
-下载并更新[ksubdomain](https://github.com/knownsec/ksubdomain/releases/) 二进制文件。
+下载并更新[ksubdomain](https://github.com/knownsec/ksubdomain/releases/) 二进制文件。(默认无需更新)
 
-下载并更新[subfinder] (https://github.com/projectdiscovery/subfinder/releases) 二进制文件。
+下载并更新[subfinder] (https://github.com/projectdiscovery/subfinder/releases) 二进制文件。(默认无需更新)
 
-下载并更新[xray](https://github.com/chaitin/xray/releases) 二进制文件。
+下载并更新[xray](https://github.com/chaitin/xray/releases) 二进制文件。(默认无需更新)
 
-下载并更新[httpx](https://github.com/projectdiscovery/httpx/releases) 二进制文件。
+下载并更新[httpx](https://github.com/projectdiscovery/httpx/releases) 二进制文件。(默认无需更新)
 ```
 在xray文件夹内放入xray-license.lic
 
