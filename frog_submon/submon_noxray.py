@@ -276,8 +276,8 @@ if __name__=='__main__':
 		if args.json:
 			print("请确定存在"+args.json)
 
-	print("请确定可执行文件都设置了执行权限")
-	print("请确定tmp目录为空")
+	#print("请确定可执行文件都设置了执行权限")
+	#print("请确定tmp目录为空")
 
 	#死循环
 	while(1):
