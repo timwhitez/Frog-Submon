@@ -61,7 +61,7 @@ python3 submon.py win -json test.json
 
 下载并更新[subfinder] (https://github.com/projectdiscovery/subfinder/releases) 二进制文件。(默认无需更新)
 
-下载并更新[xray](https://github.com/chaitin/xray/releases) 二进制文件。(默认无需更新)
+下载并更新[xray](https://github.com/chaitin/xray/releases) 二进制文件。放置于xray文件夹内命名为xray_win.exe与xray_linux
 
 下载并更新[httpx](https://github.com/projectdiscovery/httpx/releases) 二进制文件。(默认无需更新)
 ```
