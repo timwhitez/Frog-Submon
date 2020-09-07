@@ -4,6 +4,8 @@ import subprocess
 import os, sys
 import requests
 import time
+import argparse
+import json
 from banner import banner
 
 #设置server酱提醒的url
@@ -31,7 +33,7 @@ def getsys(sys0):
 		xrayname = 'xray_win.exe'
 		subfname = 'subfinder_win.exe'
 		ksubname = 'ksubdomain_win.exe'
-		httpxname = 'httpx_win'
+		httpxname = 'httpx_win.exe'
 
 
 
@@ -39,6 +41,15 @@ def getsys(sys0):
 def gettime():
 	t = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
 	return str(t)
+
+#创建文件夹
+def mkdir(fold):
+	folder = os.getcwd() + fold
+	print(folder)
+	#获取此py文件路径，在此路径选创建在new_folder文件夹中的test文件夹
+	if not os.path.exists(folder):
+		os.makedirs(folder)
+
 
 
 #读取文件输出list
@@ -52,7 +63,7 @@ def readf(fname):
 				li.append(data1)
 		f.close()
 	except:
-		pass
+		return None
 	return li
 
 
@@ -65,8 +76,9 @@ def xray_read(fname):
 		for text in f.readlines():
 			data1 = text.split(',')
 			li.append(data1[0])
-	finally:
 		f.close()
+	except:
+		return None
 	return li
 
 
@@ -153,31 +165,15 @@ def serverj(num1):
 
 
 
-#xray结果过滤
-def xray_filt(xfname):
-	results = []
-	try:
-		f = open(xfname)
-		for text in f.readlines():
-			data1 = text.strip('\n')
-			data1 = data1.split(',')
-			results.append(data1[0])
-	finally:
-		f.close()
-	
-	return results
-
-
-
 #ksub扫描
 def ksub(target):
-	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "5","-skip-wild", "-silent", "-b","400k"]
+	cmd = ["./ksub/"+ksubname, "-d", target, "-l", "3","-skip-wild", "-silent", "-b","400k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
 	except:
 		print("Unexpected error:", sys.exc_info())
-		print("请确定ksubdomain参数配置正确(加入-e参数选择网卡)")
+		print("请确定ksubdomain参数配置正确(可能需要加入-e参数选择网卡)")
 		exit()
 
 	return output
@@ -214,7 +210,9 @@ def xray(target):
 	try:
 		output = subprocess.check_output(cmd)
 	except:
-		return None
+		print("Unexpected error:", sys.exc_info())
+		print("请确定是否存在xray证书")
+		exit()
 
 	return
 
@@ -231,89 +229,123 @@ def httpx(target,outputs):
 	return
 
 
+#读取json文件
+def json_t(filename):
+	with open(filename, 'r') as jsonfile:
+		json_string = json.load(jsonfile)
+		return json_string
+
+
+#核心函数
+def run(jname,i):
+	dname = i
+	#执行ksubdomain写入文件
+	k = ksub(i)
+	if k is not None:
+		opt2File(k, "tmp/ksub_tmp.txt")
+
+	#执行subfinder写入文件
+	sf = subf(i)
+	if sf is not None:
+		opt2File(sf, "tmp/subf_tmp.txt")
+	
+		#验证subfinder
+		ksub_v = ksubverify("tmp/subf_tmp.txt")
+	if ksub_v is not None:
+		opt2File(ksub_v, "tmp/subf_tmp.txt")
+
+	#执行xray子域名发现并写入文件
+	xray(i)
+	xray_tmp = xray_read("tmp/output.txt")
+	delf("tmp/output.txt")
+	if xray_tmp is not None:
+		for j in xray_tmp:
+			rFile(j, "tmp/xray_tmp.txt")
+
+		#验证xray
+		xray_v = ksubverify("tmp/xray_tmp.txt")
+	if xray_v is not None:
+		opt2File(xray_v, "tmp/xray_tmp.txt")
+		
+
+	#读取临时文件至数组
+	tmp1 = readf("tmp/ksub_tmp.txt")
+	tmp2 = readf("tmp/subf_tmp.txt")
+	tmp3 = readf("tmp/xray_tmp.txt")
+
+	#去重排列临时数组
+	tmp1.extend(tmp2)
+	tmp1.extend(tmp3)
+	tmp1 = list(set(tmp1))
+
+	#检查更新并写入文件
+	tn = gettime()
+	hname = "output"+jname+"/update_" +dname+"_"+ tn + ".txt"
+	update_num = unduplicates("output"+jname+"/subdomains_"+dname+".txt", hname, tmp1)
+
+	#httpx请求并保存结果
+	if update_num >0:
+		httpx(hname, "http-output"+jname+"/http_"+dname+"_"+ tn + ".txt")
+
+	print("End-Time:"+tn)
+	#Server酱提醒
+	if update_num >0:
+		up_num = drop_duplicates("output"+jname+"/subdomains_"+dname+".txt", tmp1)
+		serverj(up_num)
+
+
+	#删除临时文件
+	delf("tmp/ksub_tmp.txt")
+	delf("tmp/subf_tmp.txt")
+	delf("tmp/xray_tmp.txt")
+
+
 
 if __name__=='__main__':
 	banner.banner()
 	if len(sys.argv) <= 1:
 		print('\n')
-		print("Usage:----------------------------------------------")
-		print("-----                                         ------")
-		print("-----      python3 submon.py linux            ------")
-		print("-----       python3 submon.py win             ------")
-		print("-----                                         ------")
-		print("----------------------------------------------------")
+		print("Usage:-------------------------------------------")
+		print("-----                                      ------")
+		print("-----       python3 submon.py -h           ------")
+		print("-----                                      ------")
+		print("-------------------------------------------------")
 		exit()
 	else:
-		getsys(sys.argv[1])
+			# 创建解析器
+		parser = argparse.ArgumentParser() 
+
+		#添加位置参数(positional arguments)
+		parser.add_argument('os', help='win/linux')
+		parser.add_argument('-json', default='',
+                        help='json file name')
+		args = parser.parse_args()
+		getsys(args.os)
+		if args.json:
+			print("请确定存在"+args.json)
 
 	print("请确定可执行文件都设置了执行权限")
 	print("请确定xray证书可用")
 	print("请确定tmp目录为空")
-	#os.system("pause")
+
 	#死循环
 	while(1):
-		domain = readf("domain.txt")
-		for i in domain:
-			dname = i
-			#执行ksubdomain写入文件
-			k = ksub(i)
-			if k is not None:
-				opt2File(k, "tmp/ksub_tmp.txt")
-
-			#执行subfinder写入文件
-			sf = subf(i)
-			if sf is not None:
-				opt2File(sf, "tmp/subf_tmp.txt")
-			
-			#验证subfinder
-			ksub_v = ksubverify("tmp/subf_tmp.txt")
-			if ksub_v is not None:
-				opt2File(ksub_v, "tmp/subf_tmp.txt")
-
-			#执行xray子域名发现并写入文件
-			xray(i)
-			xray_tmp = xray_read("tmp/output.txt")
-			delf("tmp/output.txt")
-			if xray_tmp is not None:
-				for j in xray_tmp:
-					rFile(j, "tmp/xray_tmp.txt")
-
-			#验证xray
-			xray_v = ksubverify("tmp/xray_tmp.txt")
-			if xray_v is not None:
-				opt2File(xray_v, "tmp/xray_tmp.txt")
-				
-
-			#读取临时文件至数组
-			tmp1 = readf("tmp/ksub_tmp.txt")
-			tmp2 = readf("tmp/subf_tmp.txt")
-			tmp3 = readf("tmp/xray_tmp.txt")
-
-			#去重排列临时数组
-			tmp1.extend(tmp2)
-			tmp1.extend(tmp3)
-			tmp1 = list(set(tmp1))
-
-			#检查更新并写入文件
-			tn = gettime()
-			print("End-Time:"+tn)
-			hname = "output/update_" +dname+"_"+ tn + ".txt"
-			update_num = unduplicates("output/subdomains_"+dname+".txt", hname, tmp1)
-
-			#httpx请求并保存结果
-			if update_num >0:
-				httpx(hname, "http-output/http_"+dname+"_"+ tn + ".txt")
-
-			#Server酱提醒
-			if update_num >0:
-				up_num = drop_duplicates("output/subdomains_"+dname+".txt", tmp1)
-				serverj(up_num)
-
-
-			#删除临时文件
-			delf("tmp/ksub_tmp.txt")
-			delf("tmp/subf_tmp.txt")
-			delf("tmp/xray_tmp.txt")
+		jname = ''
+		jdomains = []
+		if args.json:
+			json_string = json_t(args.json)
+			for p in range(len(json_string['programs'])):
+				jname = "/"+json_string['programs'][p]['name']
+				jdomains = json_string['programs'][p]['domains']
+				for i in jdomains:
+					print("项目名称: "+jname)
+					mkdir("/output"+jname)
+					mkdir("/http-output"+jname)
+					run(jname,i)
+		else:
+			domain = readf("domain.txt")
+			for i in domain:
+				run(jname,i)
 
 		#睡眠等待10h后继续循环
 		print("Sleep and wait...")
