@@ -5,6 +5,9 @@
 - Frog-Submon为Frog系列第一个项目🐸
 
 # 🐸Frog-Submon
+```
+2020/9/7更新：修复部分bug，支持[json](https://github.com/projectdiscovery/public-bugbounty-programs)格式输入，加入http请求。
+```
 Frog-Submon子域名监控脚本，采用python3实现，使用subprocess加载三款golang子域名发现工具：
 
 - [ksubdomain](https://github.com/knownsec/ksubdomain) 为知道创宇404团队开源的无状态子域名爆破工具
@@ -33,6 +36,20 @@ xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大
 
 默认睡眠时间为50000s，可自行修改
 
+# 常用命令
+```
+python3 submon.py linux
+```
+```
+python3 submon.py win 
+```
+```
+python3 submon.py linux -json test.json
+```
+```
+python3 submon.py win -json test.json
+```
+
 # Usage
 若无高级版xray则可以使用submon_noxray.py, 仅调用三个工具
 ```
@@ -46,11 +63,15 @@ xray和subfinder主要进行api相关的子域名发现，ksubdomain则进行大
 ```
 在xray文件夹内放入xray-license.lic
 
-若在linux下使用，请给对应的三个二进制文件执行权限
+若在linux下使用，请给对应的二进制文件执行权限
 
 在linux下，还需要安装`libpcap-dev`,在Windows下需要安装`WinPcap`，mac下可以直接使用。
 
-domain.txt内填上需要扫描的域名，一行一个。py脚本内url1填写Server酱api
+采用两种输入模式，json输入或txt输入，默认domain.txt输入
+
+json格式仅支持[public-bugbounty-programs](https://github.com/projectdiscovery/public-bugbounty-programs)对应格式
+
+txt输入模式下，domain.txt内填上需要扫描的域名，一行一个。py脚本内url1填写Server酱api
 
 ```
 python3 submon.py
@@ -78,14 +99,21 @@ python3 submon.py
 \/_/       \/_/    \_\/\/_________/ \/___________/
 
 
-Usage:-----------------------------------------------
------                                          ------
------       python3 submon.py linux            ------
------        python3 submon.py win             ------
------                                          ------
------------------------------------------------------
+Usage:-------------------------------------------
+-----                                      ------
+-----       python3 submon.py -h           ------
+-----                                      ------
+-------------------------------------------------
+usage: submon.py [-h] [-json JSON] os
+
+positional arguments:
+  os          win/linux
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -json JSON  json file name
 ```
-具体调用的参数也可在脚本内进行修改。
+具体subprocess调用的参数可在脚本内进行修改。
 
 # 运行截图
 ### 运行
