@@ -312,7 +312,7 @@ if __name__=='__main__':
 		print("-------------------------------------------------")
 		exit()
 	else:
-			# 创建解析器
+		# 创建解析器
 		parser = argparse.ArgumentParser() 
 
 		#添加位置参数(positional arguments)
