@@ -141,7 +141,7 @@ def ksub():
 
 #ksub验证模式
 def ksubverify(filename):
-	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-silent", "-b", "400k"]
+	cmd = ["./ksub/"+ksubname,"-f", filename, "-verify", "-skip-wild", "-silent", "-b", "400k"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
