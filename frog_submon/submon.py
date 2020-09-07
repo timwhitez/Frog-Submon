@@ -320,7 +320,7 @@ if __name__=='__main__':
 		args = parser.parse_args()
 		getsys(args.os)
 		if args.json:
-			print("请确定存在"+args.json)
+			print("从文件"+args.json)
 
 	#print("请确定可执行文件都设置了执行权限")
 	#print("请确定xray证书可用")
