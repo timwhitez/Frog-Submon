@@ -45,7 +45,7 @@ def gettime():
 #创建文件夹
 def mkdir(fold):
 	folder = os.getcwd() + fold
-	print(folder)
+	#print(folder)
 	#获取此py文件路径，在此路径选创建在new_folder文件夹中的test文件夹
 	if not os.path.exists(folder):
 		os.makedirs(folder)
