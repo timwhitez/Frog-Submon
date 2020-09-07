@@ -210,7 +210,6 @@ def xray(target):
 	try:
 		output = subprocess.check_output(cmd)
 	except:
-		print("请检查xray配置")
 		return None
 
 	return
