@@ -131,4 +131,4 @@ optional arguments:
 # todo list
 - [x] ~~按域名分类存储~~
 - [x] ~~对更新域名进行请求~~
-- [ ] 解析json格式domain输入文件
+- [x] ~~解析json格式domain输入文件~~
