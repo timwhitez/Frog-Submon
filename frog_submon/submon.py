@@ -21,6 +21,7 @@ def getsys(sys0):
 	global xrayname
 	global subfname
 	global ksubname
+	global httpxname
 	if sys0.lower() == 'linux':
 		xrayname = 'xray_linux'
 		subfname = 'subfinder_linux'
