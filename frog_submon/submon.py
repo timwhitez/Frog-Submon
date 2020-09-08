@@ -89,6 +89,14 @@ def opt2File(strw, filen):
 		f.write(strw)
 	finally:
 		f.close()
+		
+#覆盖写入
+def opt2File2(strw, filen):
+	try:
+		f = open(filen,'w')
+		f.write(strw)
+	finally:
+		f.close()
 
 #添加写入
 def rFile(strw, filen):
@@ -252,7 +260,7 @@ def run(jname,i):
 	if ksub_v is not None:
 		opt2File(ksub_v, "tmp/subf_tmp.txt")
 	else:
-		opt2File("", "tmp/subf_tmp.txt")
+		opt2File2("", "tmp/subf_tmp.txt")
 
 	#执行xray子域名发现并写入文件
 	xray(i)
@@ -267,7 +275,7 @@ def run(jname,i):
 	if xray_v is not None:
 		opt2File(xray_v, "tmp/xray_tmp.txt")
 	else:
-		opt2File("", "tmp/xray_tmp.txt")
+		opt2File2("", "tmp/xray_tmp.txt")
 		
 
 	#读取临时文件至数组
