@@ -72,6 +72,15 @@ def opt2File(strw, filen):
 	finally:
 		f.close()
 
+#覆盖写入
+def opt2File2(strw, filen):
+	try:
+		f = open(filen,'w')
+		f.write(strw)
+	finally:
+		f.close()
+		
+		
 #添加写入
 def rFile(strw, filen):
 	try:
@@ -223,7 +232,7 @@ def run(jname,i):
 	if ksub_v is not None:
 		opt2File(ksub_v, "tmp/subf_tmp.txt")
 	else:
-		opt2File("", "tmp/subf_tmp.txt")
+		opt2File2("", "tmp/subf_tmp.txt")
 
 	#读取临时文件至数组
 	tmp1 = readf("tmp/ksub_tmp.txt")
