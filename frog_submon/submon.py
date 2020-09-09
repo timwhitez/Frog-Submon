@@ -216,7 +216,7 @@ def xray(target):
 	cmd = ["./xray/"+xrayname, "subdomain","--target",target,"--text-output","./tmp/output.txt","--ip-only"]
 	print(cmd)
 	try:
-		output = subprocess.check_output(cmd)
+		output = subprocess.check_output(cmd, timeout = 3600)
 	except:
 		return None
 
@@ -225,7 +225,7 @@ def xray(target):
 
 #httpx扫描
 def httpx(target,outputs):
-	cmd = ["./httpx/"+ httpxname, "-l", target, "-title", "-content-length", "-status-code", "-web-server", "-o", outputs, "-ports", "80,81,88,443,591,2082,2087,2095,2096,3000,8000,8001,8008,8080,8083,8088,8090,8099,8443,8834,8888,9443", "-silent", "-no-color", "-follow-redirects"]
+	cmd = ["./httpx/"+ httpxname, "-l", target, "-title", "-content-length", "-status-code", "-web-server", "-o", outputs, "-silent", "-no-color", "-follow-redirects"]
 	print(cmd)
 	try:
 		output = subprocess.check_output(cmd)
@@ -263,7 +263,10 @@ def run(jname,i):
 		opt2File2("", "tmp/subf_tmp.txt")
 
 	#执行xray子域名发现并写入文件
-	xray(i)
+	try:
+		xray(i)
+	except:
+		pass
 	xray_tmp = xray_read("tmp/output.txt")
 	delf("tmp/output.txt")
 	if xray_tmp is not None:
