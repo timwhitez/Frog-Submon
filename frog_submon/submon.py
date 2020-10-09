@@ -287,9 +287,12 @@ def run(jname,i):
 	tmp3 = readf("tmp/xray_tmp.txt")
 
 	#去重排列临时数组
-	tmp1.extend(tmp2)
-	tmp1.extend(tmp3)
+	if tmp2 is not None:
+		tmp1.extend(tmp2)
+	if tmp3 is not None:
+		tmp1.extend(tmp3)
 	tmp1 = list(set(tmp1))
+
 
 	#检查更新并写入文件
 	tn = gettime()
