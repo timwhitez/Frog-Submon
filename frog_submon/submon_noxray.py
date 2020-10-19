@@ -217,10 +217,23 @@ def json_t(filename):
 #核心函数
 def run(jname,i):
 	dname = i
+	urlt = 'abc1q2w3e4r5t.' + i
+	fanjiexi = False
+	#抛出异常说明使用了泛解析
+	try:
+		socket.getaddrinfo(urlt, None)
+		fanjiexi = True
+	except:
+		pass
 	#执行ksubdomain写入文件
-	k = ksub(i)
-	if k is not None:
-		opt2File(k, "tmp/ksub_tmp.txt")
+	if fanjiexi == False:
+		print("Fanjiexi False")
+		k = ksub(i)
+		if k is not None:
+			opt2File(k, "tmp/ksub_tmp.txt")
+	else:
+		print("Fanjiexi True")
+
 
 	#执行subfinder写入文件
 	sf = subf(i)
@@ -235,23 +248,32 @@ def run(jname,i):
 		opt2File2("", "tmp/subf_tmp.txt")
 
 	#读取临时文件至数组
-	tmp1 = readf("tmp/ksub_tmp.txt")
+	if fanjiexi == False:
+		tmp1 = readf("tmp/ksub_tmp.txt")
 	tmp2 = readf("tmp/subf_tmp.txt")
 
+
 	#去重排列临时数组
+	if tmp1 is None:
+		tmp1 = tmp2
 	if tmp2 is not None:
 		tmp1.extend(tmp2)
-	tmp1 = list(set(tmp1))
+	if tmp1 is None and tmp2 is None:
+		tmp1 = None
+	if tmp1 is not None:
+		tmp1 = list(set(tmp1))
 
 
 	#检查更新并写入文件
 	tn = gettime()
 	hname = "output"+jname+"/update_" +dname+"_"+ tn + ".txt"
 	update_num = unduplicates("output"+jname+"/subdomains_"+dname+".txt", hname, tmp1)
-
+	
+	
 	#httpx请求并保存结果
-	if update_num >0:
+	if update_num >0 and update_num <1000:
 		httpx(hname, "http-output"+jname+"/http_"+dname+"_"+ tn + ".txt")
+
 
 	print("End-Time:"+tn)
 	#Server酱提醒
