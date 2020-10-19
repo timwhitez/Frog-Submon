@@ -245,10 +245,22 @@ def json_t(filename):
 #核心函数
 def run(jname,i):
 	dname = i
+	urlt = 'abc1q2w3e4r5t.' + i
+	fanjiexi = False
+	#抛出异常说明使用了泛解析
+	try:
+		socket.getaddrinfo(urlt, None)
+		fanjiexi = True
+	except:
+		pass
 	#执行ksubdomain写入文件
-	k = ksub(i)
-	if k is not None:
-		opt2File(k, "tmp/ksub_tmp.txt")
+	if fanjiexi == False:
+		print("Fanjiexi False")
+		k = ksub(i)
+		if k is not None:
+			opt2File(k, "tmp/ksub_tmp.txt")
+	else:
+		print("Fanjiexi True")
 
 	#执行subfinder写入文件
 	sf = subf(i)
@@ -263,10 +275,7 @@ def run(jname,i):
 		opt2File2("", "tmp/subf_tmp.txt")
 
 	#执行xray子域名发现并写入文件
-	try:
-		xray(i)
-	except:
-		pass
+	xray(i)
 	xray_tmp = xray_read("tmp/output.txt")
 	delf("tmp/output.txt")
 	if xray_tmp is not None:
@@ -282,16 +291,36 @@ def run(jname,i):
 		
 
 	#读取临时文件至数组
-	tmp1 = readf("tmp/ksub_tmp.txt")
+	if fanjiexi == False:
+		tmp1 = readf("tmp/ksub_tmp.txt")
 	tmp2 = readf("tmp/subf_tmp.txt")
 	tmp3 = readf("tmp/xray_tmp.txt")
 
 	#去重排列临时数组
-	if tmp2 is not None:
-		tmp1.extend(tmp2)
-	if tmp3 is not None:
-		tmp1.extend(tmp3)
-	tmp1 = list(set(tmp1))
+	if fanjiexi == False:
+		if tmp2 != None and tmp1 == None:
+			tmp1 = tmp2
+		elif tmp3 != None and tmp1 == None:
+			tmp1 = tmp3
+	if fanjiexi == True:
+		if tmp2 != None:
+			tmp1 = tmp2
+		elif tmp3 != None:
+			tmp1 = tmp3
+	if tmp2 != None:
+		try:
+			tmp1.extend(tmp2)
+		except:
+			pass
+	if tmp3 != None:
+		try:
+			tmp1.extend(tmp3)
+		except:
+			pass
+	try:
+		tmp1 = list(set(tmp1))
+	except:
+		pass
 
 
 	#检查更新并写入文件
@@ -300,20 +329,21 @@ def run(jname,i):
 	update_num = unduplicates("output"+jname+"/subdomains_"+dname+".txt", hname, tmp1)
 
 	#httpx请求并保存结果
-	if update_num >0:
+	if update_num >0 and update_num <1000:
 		httpx(hname, "http-output"+jname+"/http_"+dname+"_"+ tn + ".txt")
 
 	print("End-Time:"+tn)
 	#Server酱提醒
 	if update_num >0:
 		up_num = drop_duplicates("output"+jname+"/subdomains_"+dname+".txt", tmp1)
-		serverj(up_num)
+		serverj(dname,up_num)
 
 
 	#删除临时文件
 	delf("tmp/ksub_tmp.txt")
 	delf("tmp/subf_tmp.txt")
 	delf("tmp/xray_tmp.txt")
+
 
 
 
