@@ -137,3 +137,6 @@ optional arguments:
 - [x] ~~对更新域名进行请求~~
 - [x] ~~解析json格式domain输入文件~~
 - [ ] 加入扫描进度临时文件，重启扫描器读取进度文件
+
+# Star Trend
+[![Stargazers over time](https://starchart.cc/timwhitez/Frog-Submon.svg)](https://starchart.cc/timwhitez/Frog-Submon)
