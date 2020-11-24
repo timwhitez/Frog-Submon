@@ -142,11 +142,10 @@ def delf(fname):
 		return
 
 
-
 #server酱提示
-def serverj(num1):
+def serverj(dname,num1):
 	global url1
-	data1 = {"text": "subdomain update:"+str(num1)+"! ", "desp": "subdomain update:"+str(num1)+"! "}
+	data1 = {"text": "subdomain update:"+str(dname)+str(num1)+"! ", "desp": "subdomain update:"+str(dname)+"="+str(num1)+"! "}
 	try:
 			requests.post(url1, data=data1)
 	except:
@@ -279,7 +278,7 @@ def run(jname,i):
 	#Server酱提醒
 	if update_num >0:
 		up_num = drop_duplicates("output"+jname+"/subdomains_"+dname+".txt", tmp1)
-		serverj(up_num)
+		serverj(dname,up_num)
 
 
 	#删除临时文件
