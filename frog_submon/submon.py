@@ -161,9 +161,9 @@ def delf(fname):
 
 
 #server酱提示
-def serverj(num1):
+def serverj(dname,num1):
 	global url1
-	data1 = {"text": "subdomain update:"+str(num1)+"! ", "desp": "subdomain update:"+str(num1)+"! "}
+	data1 = {"text": "subdomain update:"+str(dname)+str(num1)+"! ", "desp": "subdomain update:"+str(dname)+"="+str(num1)+"! "}
 	try:
 			requests.post(url1, data=data1)
 	except:
