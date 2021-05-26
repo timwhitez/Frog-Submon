@@ -9,7 +9,7 @@ import json
 from banner import banner
 
 #设置server酱提醒的url
-url1 = ""
+#url1 = ""
 
 xrayname = 'xray_linux'
 subfname = 'subfinder_linux'
@@ -334,9 +334,9 @@ def run(jname,i):
 
 	print("End-Time:"+tn)
 	#Server酱提醒
-	if update_num >0:
-		up_num = drop_duplicates("output"+jname+"/subdomains_"+dname+".txt", tmp1)
-		serverj(dname,up_num)
+	#if update_num >0:
+		#up_num = drop_duplicates("output"+jname+"/subdomains_"+dname+".txt", tmp1)
+		#serverj(dname,up_num)
 
 
 	#删除临时文件
